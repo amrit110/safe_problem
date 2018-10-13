@@ -73,7 +73,8 @@ in that grid cell. For this, we can maintain dictionaries with locations of mirr
 row and column respectively so that we can look up the dictionaries to find the closest mirror.
 Finding the index of the current position of the laser beam in this list can be done using binary
 search with `O(log(N))` time complexity, if we pre-sort the list of row/column indices which
-are the locations of mirrors. We can assume `O(N * log(N))` time complexity for sorting.
+are the locations of mirrors. We can assume `O(N * log(N))` time complexity for sorting, 
+where `N` is the number of mirrors in a row or column.
 
 * With the index and direction, we can find the index of the next mirror and hence its position.
 The result is that we end up with the path of the laser beam as a set of points that
@@ -139,10 +140,13 @@ from the sweeps, we compare them to resolve to the final one.
 #### Space complexity
 
 * As for space, we had to store the row or column indices of each mirror
-for every row and column. In the worst case, if there are mirrors in every grid cell, 
-then we have `O(M * N)` memory complexity for the dictionaries that we populate, 
-where `M` and `N` are the number of rows and columns.
-This is unavoidable for any algorithm.
+for every row and column. In the worst case, if there is atleast 1 mirror in every row/column, 
+then we have `O(M)` + `O(N)` space complexity for the dictionaries that we populate, 
+where `M` and `N` are the number of rows and columns. Each row or column can have different
+number of mirrors, so we can assume an average number of mirrors per row/column which would 
+give `O(M * C)` + `O(N * C)` space complexity, where `C` can be approximately `(m + n) / r`
+or `(m + n) / c`.
+This space complexity is unavoidable for any algorithm.
 
 * For the binary search tree, we have `O(N)` memory needed to store `N` possible events
 (horizontal segment starts).
