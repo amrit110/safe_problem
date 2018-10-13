@@ -74,7 +74,9 @@ row and column respectively so that we can look up the dictionaries to find the 
 Finding the index of the current position of the laser beam in this list can be done using binary
 search with `O(log(N))` time complexity, if we pre-sort the list of row/column indices which
 are the locations of mirrors. We can assume `O(N * log(N))` time complexity for sorting, 
-where `N` is the number of mirrors in a row or column.
+where average `N` is the number of mirrors in a row or column. We however might need to do this 
+for every row/column where a mirror is encountered. So that gives `O(N * C * log(N))` 
+where `C` is the total number of mirrors.
 
 * With the index and direction, we can find the index of the next mirror and hence its position.
 The result is that we end up with the path of the laser beam as a set of points that
@@ -145,7 +147,7 @@ then we have `O(M)` + `O(N)` space complexity for the dictionaries that we popul
 where `M` and `N` are the number of rows and columns. Each row or column can have different
 number of mirrors, so we can assume an average number of mirrors per row/column which would 
 give `O(M * C)` + `O(N * C)` space complexity, where `C` can be approximately `(m + n) / r`
-or `(m + n) / c`.
+or `(m + n) / c`. This can still be regarded as `O(M)` + `O(N)`.
 This space complexity is unavoidable for any algorithm.
 
 * For the binary search tree, we have `O(N)` memory needed to store `N` possible events
