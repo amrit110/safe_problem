@@ -118,22 +118,26 @@ for this. `N` here corresponds to events which are the horizontal segment start/
 or vertical lines.
 
 * All insertions into the binary search tree would take `O(N * log(N))` time complexity,
-assuming `N` horizontal segment starts.
+assuming `N` nodes in the tree.
 
 * All deletions from the binary search tree would also take `O(N * log(N))` time complexity,
-assuming `N` horizontal segment end points.
+assuming `N` nodes in the tree.
 
 * The 1-D range search would take `O(M * log(N))` time complexity assuming `N` possible searches,
-where `N` is the range of a vertical segment and `M` is the number of vertical segments.
+where `N` is the range of a vertical segment (points between the end of points of the segment, 
+assuming closed line segments) and `M` is the number of vertical segments.
 
 * Note that we assume `log(N)` time complexity of the various operations of the binary
 search tree (insertion, deletion, search) which is the average case time complexity in general.
-But for the given problem, since we will never have a worst case (fully unbalanced tree),
-we can safely assume the average case time complexity.
+But for the given problem, since we will rarely have a worst case (fully unbalanced tree),
+the average case time complexity is more apt to consider over the space of possible mirror 
+configurations. The worst case can occur if we encounter horizontal segments successively
+increasing in row coordinate in which we will have `O(N)` for all tree operations, where `N`
+is the number of nodes in the tree.
 
 * We also assume that steps where sorting is involved, this is done using merge sort,
-which would give `O(N * log(N))` time complexity. In python `timsort` is used which is
-more efficient.
+which would give `O(N * log(N))` time complexity. In python `timsort` algorithm is used 
+when calling `sorted()` function. https://arxiv.org/pdf/1805.08612.pdf.
 
 * During the sweep-line, since we process the events which are sorted along column
 coordinate and the range search also is done from top to bottom (row coordinate), the
