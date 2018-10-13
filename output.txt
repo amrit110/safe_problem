@@ -1,0 +1,6 @@
+Case 0: 2 4 3
+Case 1: 0
+Case 2: impossible
+Case 3: 1 5 2
+Case 4: 2 5 3
+Case 5: 2 3 2
