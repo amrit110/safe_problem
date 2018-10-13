@@ -64,7 +64,7 @@ to place an additional mirror, we can directly return `0`.
 * One way to trace the path of the beam is to create a path along the direction of the
 beam and check each grid cell if a mirror exists and change direction according to
 mirror orientation. However in the worst case, this could mean checking every
-single grid cell, and hence (`O(M * N)` runtime complexity, `M` and `N` are
+single grid cell, and hence (`O(M * N)` runtime complexity, where `M` and `N` are
 the number of rows and columns).
 
 * But then, given the current direction of the laser beam, we need to check
