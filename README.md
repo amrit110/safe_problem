@@ -63,7 +63,7 @@ to place an additional mirror, we can directly return `0`.
 
 * One way to trace the path of the beam is to create a path along the direction of the
 beam and check each grid cell if a mirror exists and change direction according to
-mirror orientation. However in the worst case, this could mean checking every
+the mirror orientation. However in the worst case, this could mean checking every
 single grid cell, and hence (`O(M * N)` runtime complexity, where `M` and `N` are
 the number of rows and columns).
 
@@ -74,9 +74,8 @@ row and column respectively so that we can look up the dictionaries to find the 
 Finding the index of the current position of the laser beam in this list can be done using binary
 search with `O(log(N))` time complexity, if we pre-sort the list of row/column indices which
 are the locations of mirrors. We can assume `O(N * log(N))` time complexity for sorting, 
-where average `N` is the number of mirrors in a row or column. We however might need to do this 
-for every row/column where a mirror is encountered. So that gives `O(N * C * log(N))` 
-where `C` is the total number of mirrors.
+where `N` is the average number of mirrors in a row or column. We however need to do this 
+for every row/column where a mirror is encountered.
 
 * With the index and direction, we can find the index of the next mirror and hence its position.
 The result is that we end up with the path of the laser beam as a set of points that
@@ -85,7 +84,7 @@ then we can trace the path of the laser beam with `O(N * log(N))` time complexit
 Note that this is the worst case, if the beam hits every mirror.
 
 * If the forward laser beam trace does not reach the detector, we need to find the
-location to place the mirror. This can be computed if we ran a backward laser beam
+locations where a mirror can be placed. This can be computed if we ran a backward laser beam
 trace from the detector. The points of intersection of the backward trace with the
 forward trace are possible locations where a mirror can be placed to open the safe.
 
@@ -101,16 +100,16 @@ points. A naive way is to compare each segment with every other segment for inte
 But this would result in `O(N * M)` time complexity in the worst case, where `N` and `M` are the
 number of horizontal and vertical line segments. This quadratic complexity is pretty bad.
 
-* But we can do better, if we use a sweep-line approach. The idea is that we treat
-we scan horizontally from left to right and record events. The possible events are:
+* But we can do better, if we use a sweep-line approach. The idea is that we scan horizontally 
+from left to right and record events. The possible events are:
 
   * horizontal line segment start
   * horizontal line segment end
   * vertical line segment
 
 * Whenever a horizontal line segment start is reached, we use a marker and add the
-row coordinate to a binary search tree. When we reach a horizontal line segment end
-we remove that from the tree. If we encounter a vertical segment, we do 1-D range
+row coordinate as a node to a binary search tree. When we reach a horizontal line segment end
+we remove that node from the tree. If we encounter a vertical segment, we do 1-D range
 search in the binary tree for the row coordinate that intersects with potential
 active horizontal segments.
 
@@ -131,6 +130,10 @@ where `N` is the range of a vertical segment and `M` is the number of vertical s
 search tree (insertion, deletion, search) which is the average case time complexity in general.
 But for the given problem, since we will never have a worst case (fully unbalanced tree),
 we can safely assume the average case time complexity.
+
+* We also assume that steps where sorting is involved, this is done using merge sort,
+which would give `O(N * log(N))` time complexity. In python `timsort` is used which is
+more efficient.
 
 * During the sweep-line, since we process the events which are sorted along column
 coordinate and the range search also is done from top to bottom (row coordinate), the
