@@ -139,14 +139,16 @@ from the sweeps, we compare them to resolve to the final one.
 #### Space complexity
 
 * As for space, we had to store the row or column indices of each mirror
-for every row and column. In the worst case, if there are mirrors in every row and
-column, then we have `O(M * N)` memory complexity respectively for the
-dictionaries that we populate, where `M` and `N` are the number of rows and columns.
+for every row and column. In the worst case, if there are mirrors in every grid cell, 
+then we have `O(M * N)` memory complexity for the dictionaries that we populate, 
+where `M` and `N` are the number of rows and columns.
 This is unavoidable for any algorithm.
 
 * For the binary search tree, we have `O(N)` memory needed to store `N` possible events
 (horizontal segment starts).
 
+* We also store the horizontal and vertical segments. If there are `N` mirrors, there are `N + 1`
+segments. So thats still `O(N)` space complexity.
 
 ## How to run
 
