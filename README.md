@@ -50,7 +50,7 @@ exactly `k` positions where inserting a mirror opens the safe, and `(r, c)` is t
 lexicographically smallest such row, column position. A position where
 both a `/` and a `\` mirror open the safe counts just once.
 
-* impossible if the safe cannot be opened with or without inserting a mirror.
+* `impossible` if the safe cannot be opened with or without inserting a mirror.
 
 
 ## Approach and Analysis
@@ -127,7 +127,7 @@ assuming `N` nodes in the tree.
 where `N` is the range of a vertical segment (points between the end of points of the segment, 
 assuming closed line segments) and `M` is the number of vertical segments.
 
-* Note that we assume `log(N)` time complexity of the various operations of the binary
+* Note that we assume `log(N)` time complexity for the various operations of the binary
 search tree (insertion, deletion, search) which is the average case time complexity in general.
 But for the given problem, since we will rarely have a worst case (fully unbalanced tree),
 the average case time complexity is more apt to consider over the space of possible mirror 
