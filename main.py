@@ -169,6 +169,7 @@ class Safe:
 
         result = str(n_intersections) + " " + str(lexi_first[0]) + \
             " " + str(lexi_first[1])
+
         return result
 
     def get_lexi_first(self, lexi_candidates):
@@ -183,6 +184,7 @@ class Safe:
 
         """
         point_a, point_b = lexi_candidates
+
         if (point_a[0] < point_b[0]):
             return point_a
         elif (point_a[0] == point_b[0]):
@@ -217,6 +219,7 @@ class Safe:
                 for i in range(x_range[0] + 1, x_range[1]):
                     if self.bst[i] is not None:
                         intersections.append((self.bst[i], y))
+
         return intersections
 
     def run_trace(self, laser_beam_trace, end):
@@ -227,12 +230,13 @@ class Safe:
             end (list): end point.
 
         Returns:
-            (bool): flag if beam reached end point.
+            (tuple): tuple with flag if beam reached end point, laser beam object.
 
         """
         done = False
         while True:
-            next_point_trace, mirror_orientation = self.get_next_point_trace(laser_beam_trace)
+            next_point_trace, mirror_orientation, laser_beam_trace = \
+                self.get_next_point_trace(laser_beam_trace)
             laser_beam_trace.update_last_point_visited(next_point_trace)
             if (next_point_trace == end):
                 done = True
@@ -244,7 +248,7 @@ class Safe:
                 new_direction = compute_direction(laser_beam_trace.direction, mirror_orientation)
                 laser_beam_trace.update_direction(new_direction)
 
-        return done
+        return done, laser_beam_trace
 
     def trace_forward(self):
         """Trace path of the laser from the source.
@@ -261,7 +265,7 @@ class Safe:
         forward_trace.update_last_point_visited(start)
         forward_trace.update_direction(direction)
 
-        done = self.run_trace(forward_trace, end)
+        done, forward_trace = self.run_trace(forward_trace, end)
 
         return done, forward_trace
 
@@ -280,7 +284,7 @@ class Safe:
         backward_trace.update_last_point_visited(start)
         backward_trace.update_direction(direction)
 
-        _ = self.run_trace(backward_trace, end)
+        _, backward_trace = self.run_trace(backward_trace, end)
 
         return backward_trace
 
@@ -298,6 +302,7 @@ class Safe:
         list_mirrors = [item for item in list_mirrors]
         list_mirrors.insert(0, (0, None))
         list_mirrors.append((end, None))
+
         return list_mirrors
 
     def get_next_point_trace(self, laser_beam_trace):
@@ -310,7 +315,8 @@ class Safe:
             laser_beam_trace (LaserBeam): laser beam object.
 
         Returns:
-            next_point_trace (tuple): next point in the path traced by the laser beam.
+            (tuple): next point in the laser beam path, orientation of last mirror
+            encountered, laser beam object.
 
         """
         current_point_trace = laser_beam_trace.last_point_visited
@@ -365,7 +371,7 @@ class Safe:
             # Append to list of segments.
             laser_beam_trace.add_vertical_segment([current_point_trace, next_point_trace])
 
-        return next_point_trace, mirror_orientation
+        return next_point_trace, mirror_orientation, laser_beam_trace
 
 
 def run_binary_search(list_nums, target):
@@ -439,12 +445,16 @@ def fill_mirror_position(safe, position, orientation):
 
     """
     row, col = position
+
     if safe.row_mirror_positions.get(row) is None:
         safe.row_mirror_positions[row] = []
     safe.row_mirror_positions[row].append((col, orientation))
     if safe.col_mirror_positions.get(col) is None:
         safe.col_mirror_positions[col] = []
+
     safe.col_mirror_positions[col].append((row, orientation))
+
+    return safe
 
 
 def prepare_safes_to_solve(config):
@@ -467,9 +477,9 @@ def prepare_safes_to_solve(config):
             count = 0
         else:
             if count < m:
-                fill_mirror_position(safe, line_contents, 0)
+                safe = fill_mirror_position(safe, line_contents, 0)
             else:
-                fill_mirror_position(safe, line_contents, 1)
+                safe = fill_mirror_position(safe, line_contents, 1)
             count += 1
 
     return safes_to_solve
