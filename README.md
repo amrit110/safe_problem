@@ -1,5 +1,7 @@
 # Safe Problem
 
+https://icpc.baylor.edu/worldfinals/problems
+
 ## Problem Description
 
 A safe with an optical closure mechanism, has a rectangular grid with several
